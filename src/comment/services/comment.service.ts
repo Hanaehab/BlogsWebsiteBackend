@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, Observable } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 import { PostInterface } from 'src/post/models/post.interface';
 import { User } from 'src/user/models/user.interface';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
@@ -21,15 +21,26 @@ export class CommentService {
         return from(this.commentRepositry.save(comment));
     }
 
-    // findAllPosts(): Observable<PostInterface[]>{
-    //     return from(this.postRepositry.find())
-    // }
 
-    // updatePost(id: number, feedPost: PostInterface): Observable<UpdateResult>{
-    //     return  from(this.postRepositry.update(id,feedPost))
-    // }
+    findById(id: number): Observable<Comment>{
+        return  from(this.commentRepositry.findOne({
+            where: {id: id},
+            relations: ['user','post'],
+          }))
+    }
 
-    // deletePost(id: number): Observable<DeleteResult>{
-    //     return  from(this.postRepositry.delete(id))
-    // }
+    findAllComments(): Observable<Comment[]>{
+        return from(this.commentRepositry.find({relations: ['user','post']}))
+    }
+
+    updateComment(id: number, comment: Comment): Observable<Comment>{
+        return  from(this.commentRepositry.update(id,comment)).pipe(
+            switchMap(() => this.findById(id))
+        )
+    }
+
+    deleteComment(id: number): Observable<DeleteResult>{
+        return  from(this.commentRepositry.delete(id))
+    }
+
 }

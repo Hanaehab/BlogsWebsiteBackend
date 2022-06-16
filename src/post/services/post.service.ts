@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, Observable } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { PostEntity } from '../models/post.entity';
 import { PostInterface } from '../models/post.interface';
 import { User } from '../../user/models/user.interface';
-import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class PostService {
@@ -34,17 +33,20 @@ export class PostService {
           }))
     }
 
-    // findAllPosts(): Observable<PostInterface[]>{
-    //     return from(this.postRepositry.find())
-    // }
+    findAllPosts(): Observable<PostInterface[]>{
+        return from(this.postRepositry.find({relations: ['user']}))
+    }
 
-    // updatePost(id: number, Post: PostInterface): Observable<UpdateResult>{
-    //     return  from(this.postRepositry.update(id,Post))
-    // }
+    updatePost(id: number, Post: PostInterface): Observable<PostInterface>{
+        return  from(this.postRepositry.update(id,Post)).pipe(
+            switchMap(() => this.findById(id))
+        )
+    }
 
-    // deletePost(id: number): Observable<DeleteResult>{
-    //     return  from(this.postRepositry.delete(id))
-    // }
+    deletePost(id: number): Observable<DeleteResult>{
+        return  from(this.postRepositry.delete(id))
+    }
+
 }
 
 

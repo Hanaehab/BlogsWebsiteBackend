@@ -34,12 +34,15 @@ export class UserController {
         )
     }
 
-    
-
     @Get(':id')
     findUser(@Param(('id')) id: number):Observable<User>{
         return this.userService.findUser(id)
     }
+
+
+
+
+    
 
     @UseGuards(JwtAuthGuard, SameUserGuard)
     @Put(':id')

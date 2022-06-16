@@ -16,7 +16,11 @@ export class CommentEntity{
     createdAt: Date;
 
 
-    @ManyToOne(type => UserEntity, user => user.comment) user: UserEntity; 
-    @ManyToOne(type => PostEntity, post => post.comment) post: PostEntity; 
+    @ManyToOne(type => UserEntity, user => user.comment , {
+        onDelete: "CASCADE"
+    }) user: UserEntity; 
+    @ManyToOne(type => PostEntity, post => post.comment, {
+        onDelete: "CASCADE"
+    }) post: PostEntity; 
     
 }
