@@ -2,10 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { catchError, Observable, map, of } from 'rxjs';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { SameUserGuard } from 'src/auth/guards/sameUser.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { User, UserRole } from '../models/user.interface';
+import { User } from '../models/user.interface';
 import { UserService } from '../services/user.service';
 
 @Controller('user')
@@ -39,9 +38,6 @@ export class UserController {
         return this.userService.findUser(id)
     }
 
-
-
-
     
 
     @UseGuards(JwtAuthGuard, SameUserGuard)
@@ -50,15 +46,14 @@ export class UserController {
         return this.userService.updateUser(id,user)
     }
     
-    @hasRoles(UserRole.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
+   
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     delete(@Param('id')id:number): Observable<DeleteResult>{
         return this.userService.deleteUser(id)
     }
 
-    @hasRoles(UserRole.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    @UseGuards(JwtAuthGuard)
     @Put(':id/role')
     updateRoleOfUser(@Param('id') id: string, @Body() user: User): Observable<User> {
         return this.userService.updateRoleOfUser(Number(id), user);

@@ -30,6 +30,11 @@ export class PostController {
     findPost(@Param('id')id:number):Observable<PostInterface>{
         return this.PostService.findById(id)
     }
+    
+    @Get('find-by-user/:id')
+    findBlogEntries(@Param('id')id:number): Observable<PostInterface[]> {
+        return this.PostService.findByUser(id)
+    }
 
     @UseGuards(JwtAuthGuard, UserIsAuthorGuard)
     @Put(':id')

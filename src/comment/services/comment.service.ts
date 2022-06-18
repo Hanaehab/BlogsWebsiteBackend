@@ -28,6 +28,14 @@ export class CommentService {
             relations: ['user','post'],
           }))
     }
+    findByPost(id: number): Observable<Comment[]> {
+        return from(this.commentRepositry.find({
+            where: {
+                post:{id} 
+            },
+            relations: ['user','post'],
+        }))
+    }
 
     findAllComments(): Observable<Comment[]>{
         return from(this.commentRepositry.find({relations: ['user','post']}))

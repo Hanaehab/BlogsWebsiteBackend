@@ -48,5 +48,10 @@ export class CommentController {
         return this.CommentService.deleteComment(id)
     }
 
+    @Get('find-by-post/:id')
+    findBlogEntries(@Param('id')id:number): Observable<Comment[]> {
+        return this.CommentService.findByPost(id)
+    }
+
 
 }

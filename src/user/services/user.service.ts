@@ -25,8 +25,6 @@ export class UserService {
                 newUser.userName = user.userName;
                 newUser.email= user.email;
                 newUser.password= passwordHash;
-                newUser.role = user.role;
-
                 return from(this.userRepositry.save(newUser)).pipe(
                     map((user: User)=>{
                         const {password,...result} = user;

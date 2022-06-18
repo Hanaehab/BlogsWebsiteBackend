@@ -9,11 +9,4 @@ export interface User{
     password?: string;
     posts?: PostInterface[];
     comments? : Comment[];
-    role?: UserRole;
-}
-
-export enum UserRole {
-    ADMIN = 'admin',
-    USER = 'user',
-    EDITOR = 'editor',
 }
