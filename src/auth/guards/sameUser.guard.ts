@@ -24,11 +24,9 @@ export class SameUserGuard implements CanActivate{
         return this.userService.findUser(user.id).pipe(
             map((user: User) => {
                 let hasPermission = false;
-                
                 if(user.id === Number(params.id)) {
                     hasPermission = true;
                 }
-
                 return user && hasPermission;                
             })
         )

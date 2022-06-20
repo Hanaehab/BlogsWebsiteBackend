@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { catchError, Observable, map, of } from 'rxjs';
-import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { SameUserGuard } from 'src/auth/guards/sameUser.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -51,12 +50,6 @@ export class UserController {
     @Delete(':id')
     delete(@Param('id')id:number): Observable<DeleteResult>{
         return this.userService.deleteUser(id)
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Put(':id/role')
-    updateRoleOfUser(@Param('id') id: string, @Body() user: User): Observable<User> {
-        return this.userService.updateRoleOfUser(Number(id), user);
     }
 
 }

@@ -98,9 +98,6 @@ export class UserService {
         )
     }
 
-    updateRoleOfUser(id: number, user: User): Observable<any> {
-        return from(this.userRepositry.update(id, user));
-    }
     
 
 
